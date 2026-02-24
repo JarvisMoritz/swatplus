@@ -55,8 +55,16 @@ cluster.patch
 readme*
 CMakeFiles/
 CMakeCache.txt
+CMakeLists.txt
 .history/*
 Resources/R*
 src/main.f90
 ford.md
 /.vs/SWAT_PLUS_DEV
+test/*
+*.bsn
+*.out
+erosion.txt
+src - Kopie/
+data/wallo7/
+.exe
