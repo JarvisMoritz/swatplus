@@ -9,7 +9,8 @@
       use conditional_module
       use water_body_module
       use constituent_mass_module  !! added nbs
-      
+      use water_allocation_module
+
       implicit none
 
       integer :: ii = 0               !none          |counter 
@@ -26,7 +27,7 @@
       real :: alpha_up = 0.
       real :: alpha_down = 0.
 
-      ht1 = ob(icmd)%hin    !! set incoming flow
+      ht1 = ob(icmd)%hin   !! set incoming flow
       ht2 = resz            !! zero outgoing flow
 
       if (time%yrc > res_hyd(jres)%iyres .or. (time%mo >= res_hyd(jres)%mores   &
@@ -46,7 +47,6 @@
       
         !! add incoming flow to reservoir
         res(jres) = res(jres) + ht1
-
         !! perform reservoir water/sediment balance
         idat = res_ob(jres)%props
         if(res_ob(jres)%rel_tbl == "d") then
@@ -186,6 +186,11 @@
       !                                           res(jres)%sed, ht1%sed, ht2%sed
       !end if
   !!!! for Luis only
-      
+      ! open(unit=77777, file='output_file_test.txt', status='unknown')
+      ! if (jres == 1) then
+      !   write (77777,'(*(G0.3,:","))') time%day, time%yrc, jres, res(jres)%flo, ht1%flo, ht2%flo,   &
+      !                                            res(jres)%sed, ht1%sed, ht2%sed
+      ! end if
+
       return
       end subroutine res_control

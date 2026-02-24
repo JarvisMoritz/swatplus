@@ -98,7 +98,7 @@
             exit
           end if
         end do
-      
+    
         if (action == "y") then
           select case (d_tbl%act(iac)%typ)
           
@@ -681,18 +681,25 @@
                 
             case ("flo_cms")    !! flow diversion demand to m3
               trans_m3 = d_tbl%act(iac)%const * 86400.
-
             case ("min_cms")    !! minimum flow rate (m3/s)
-              if (ob(ob_num)%hd(1)%flo / 86400. < d_tbl%act(iac)%const + .0001) then
+              ! if (ob(ob_num)%hd(1)%flo / 86400. < d_tbl%act(iac)%const + .0001) then
+              !   ! below min - all flow to downstream channel (first outflow hydrograph in connect file)
+              !  trans_m3 = 0.
+              ! else
+              !   ! above min flow 
+              !  trans_m3 = ob(ob_num)%hd(1)%flo - d_tbl%act(iac)%const * 86400.
+              ! end if
+              if (ht2%flo  / 86400. < d_tbl%act(iac)%const + .0001) then
                 !! below min - all flow to downstream channel (first outflow hydrograph in connect file)
                 trans_m3 = 0.
               else
                 !! above min flow 
-                trans_m3 = ob(ob_num)%hd(1)%flo - d_tbl%act(iac)%const * 86400.
+                trans_m3 = ht2%flo  - d_tbl%act(iac)%const * 86400.
               end if
               
             case ("all_flo")    !! all flow diverted
-              trans_m3 = ob(ob_num)%hd(1)%flo
+              !trans_m3 = ob(ob_num)%hd(1)%flo
+              trans_m3 = ht2%flo 
 
             case ("min_frac")   !! minimum - constant fraction 
               trans_m3 = d_tbl%act(iac)%const * ob(ob_num)%hd(1)%flo
@@ -726,6 +733,24 @@
                 dmd_m3 = d_tbl%act(iac)%const * res_ob(j)%evol - res(j)%flo
                 dmd_m3 = Max (0., dmd_m3)
               end if
+
+            !! demand is to release water ABOVE target (NEW OPTION - added for water removal by Moritz Wirthensohn, TUM)
+            case ("release_above")
+              if (d_tbl%act(iac)%file_pointer == "pvol") then
+                dmd_m3 = res(j)%flo - d_tbl%act(iac)%const * res_ob(j)%pvol
+                dmd_m3 = Max (0., dmd_m3)
+              end if
+              if (d_tbl%act(iac)%file_pointer == "evol") then
+                dmd_m3 = res(j)%flo - d_tbl%act(iac)%const * res_ob(j)%evol
+                dmd_m3 = Max (0., dmd_m3)
+              end if
+            
+            !! demand equals reservoir inflow (NEW OPTION 2)
+            case ("inflow")
+              iob = sp_ob1%res + j - 1
+              dmd_m3 = ob(iob)%hin%flo * d_tbl%act(iac)%const
+              dmd_m3 = Max (0., dmd_m3)
+
             end select
                                                                         
           !flow control for water allocation - needs to be modified***
@@ -1133,6 +1158,7 @@
           case ("herd")
 
           end select
+
         end if
       end do
 

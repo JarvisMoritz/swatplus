@@ -146,7 +146,22 @@
                 end do
               end if
             end if
-          
+
+            !!!!!!!! for reservoir demands using decision table ADDED BY MORITZ W
+            if (wallo(iwro)%dmd(i)%ob_typ == "res") then
+              if (wallo(iwro)%dmd(i)%withdr /= "ave_day") then
+                !! xwalk with DECISION TABLE database (not recall)
+                do idb = 1, db_mx%dtbl_flo
+                  if (wallo(iwro)%dmd(i)%withdr == dtbl_flo(idb)%name) then
+                    wallo(iwro)%dmd(i)%rec_num = idb
+                    exit
+                  end if
+                end do
+              end if
+            end if
+             !!!!!!!!!!!
+            
+            
             !! for municipal treatment - recall option for daily, monthly, or annual mass
             if (wallo(iwro)%dmd(i)%treat_typ == "recall") then
               !! xwalk with recall database

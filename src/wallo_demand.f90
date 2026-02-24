@@ -14,7 +14,7 @@
       integer :: id = 0             !none       |flo_con decision table number
       integer :: isrc = 0           !none       |source object number
       integer :: irec = 0           !none       |recall database number
-
+      
       !! zero total demand for each object
       wallod_out(iwallo)%dmd(idmd)%dmd_tot = 0.
       
@@ -83,6 +83,7 @@
 
       !! initialize unmet to total demand and subtract as water is withdrawn
       wallo(iwallo)%dmd(idmd)%unmet_m3 = wallod_out(iwallo)%dmd(idmd)%dmd_tot
+      
       
       
       !! compute demand from each source object

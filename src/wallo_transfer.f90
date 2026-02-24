@@ -26,7 +26,8 @@
       case ("res") 
         j = wallo(iwallo)%dmd(idmd)%rcv_num
         res(j) = res(j) + wallo(iwallo)%dmd(idmd)%hd
-            
+        res_in_d(j) = res_in_d(j) + wallo(iwallo)%dmd(idmd)%hd
+
       !! aquifer source
       case ("aqu") 
         j = wallo(iwallo)%dmd(idmd)%rcv_num

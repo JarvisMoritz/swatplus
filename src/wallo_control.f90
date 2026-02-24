@@ -23,7 +23,12 @@
       real :: div_total = 0.                !m3     |cumulative available diversion water
       real :: div_daily = 0.                !m3     |daily water diverted for irrigation
       
+      !!!!! ADDED BY MORITZ WIRTHENSOHN
+      trans_m3 = 0.
+      dmd_m3 = 0.
+      !!!!!!!!!!!!!
 
+      
       !! zero demand, withdrawal, and unmet for entire allocation object
       wallo(iwallo)%tot = walloz
       
@@ -70,7 +75,6 @@
   
         !! set demand for each object
         call wallo_demand (iwallo, idmd)
- 
         !! if demand - check source availability
         if (wallod_out(iwallo)%dmd(idmd)%dmd_tot > 0.) then
             
@@ -82,7 +86,6 @@
               call wallo_withdraw (iwallo, idmd, isrc)
             end if
           end do
-        
           !! loop through sources again to check if compensation is allowed
           do isrc = 1, wallo(iwallo)%dmd(idmd)%dmd_src_obs
             if (wallo(iwallo)%dmd(idmd)%src(isrc)%comp == "y") then
@@ -99,7 +102,7 @@
             wallo(iwallo)%dmd(idmd)%withdr_tot = wallo(iwallo)%dmd(idmd)%withdr_tot +           &
                                                   wallod_out(iwallo)%dmd(idmd)%src(isrc)%withdr
           end do
-        
+          
           !! if irrigating set amount applied and runoff
           select case (wallo(iwallo)%dmd(idmd)%ob_typ)
           !! irrigation demand

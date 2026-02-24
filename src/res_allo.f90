@@ -8,7 +8,8 @@
       use hydrograph_module
       use constituent_mass_module
       use water_body_module
-      
+      use water_allocation_module
+
       implicit none     
 
       integer :: ires = 0       !             |
