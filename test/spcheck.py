@@ -161,6 +161,7 @@ def copy_data(from_dir: str, to_dir: str) -> None:
 def run_swat(swat_model: str, wdir: str) -> int:
     if not os.path.exists(swat_model):
         raise Exception(f'Model not found: {swat_model}')
+
     p = Popen(executable=swat_model, args=[], cwd=wdir, stdout=sys.stdout, stderr=sys.stdout)
     p.wait()
     if p.returncode != 0:
