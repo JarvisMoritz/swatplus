@@ -276,6 +276,9 @@
         pet_day = wst(iwst)%weat%pet
        case (4) !! CONSTANT DAILY PET (basin-wide)
         call pet_constant (pet_day)
+
+       case(5)
+        call pet_temp(pet_day)
       end select
        
       pet_day = hru(j)%hyd%pet_co * pet_day
